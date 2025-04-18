@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <div class="bg-gray-800 p-4 sm:p-6 rounded shadow">
+    <h1 class="text-lg sm:text-xl font-bold text-gray-100 mb-4">
+      {% if post %}Edit Post{% else %}New Post{% endif %}
+    </h1>
+    <form method="post" enctype="multipart/form-data" class="flex flex-col space-y-4">
+      <label class="block text-gray-100">
+        <span class="text-sm">Title</span>
+        <input type="text" name="title" required value="{{ post.title if post else '' }}"
+               class="mt-1 block w-full rounded bg-gray-700 text-gray-100 border-gray-600 focus:ring-blue-500 focus:border-blue-500" />
+      </label>
+      <label class="block text-gray-100">
+        <span class="text-sm">Content</span>
+        <textarea id="body" name="body" rows="6"
+                  class="mt-1 block w-full rounded bg-gray-700 text-gray-100 border-gray-600 focus:ring-blue-500 focus:border-blue-500">{{ post.body if post else '' }}</textarea>
+      </label>
+      <label class="block text-gray-100">
+        <span class="text-sm">Attachment</span>
+        <input type="file" name="file" class="mt-1 block text-gray-100" />
+        {% if post and post.filename %}
+          <p class="text-xs text-gray-400">Current: {{ post.filename }}</p>
+        {% endif %}
+      </label>
+      <button type="submit" class="self-start px-4 py-2 bg-green-600 text-gray-100 rounded hover:bg-green-700 text-sm sm:text-base">
+        Save Post
+      </button>
+    </form>
+  </div>
+</div>
+<script>
+  tinymce.init({
+    selector: '#body', height: 300, menubar: false,
+    plugins: ['advlist autolink lists link code charmap preview anchor',
+              'searchreplace visualblocks code fullscreen','insertdatetime media table wordcount'],
+    toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat',
+    content_style: 'body{background:#1F2937;color:#F3F4F6;}'
+  });
+</script>
+{% endblock %}
